@@ -1,0 +1,1 @@
+# cc36-solo-project
