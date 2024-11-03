@@ -1,0 +1,26 @@
+https://erd.dbdesigner.net/designer/schema/1730355229-cc36-solo-project
+
+users {
+	id integer pk increments unique
+	user string >* game_cards.user_id
+	hashed_password string
+}
+
+game_cards {
+	id integer pk increments unique > game_data.game_id
+	user_id integer
+	name string
+	rating integer
+	completion_rate integer
+	completion_status boolean
+	review string
+	console string
+	reference_url string
+	updated_at datetime
+	created_at datetime
+}
+
+game_data {
+	id integer pk increments unique
+	game_id string
+}
