@@ -4,12 +4,18 @@ import { useState, useRef, useEffect } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const Login: React.FC = ( {setUserName, setLoginView} : any) => {
+interface Props {
+    setUsername: any, 
+    setPageView: any,
+    setUserId: any,
+}
+
+const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
     const inputUsername : any = useRef();
     const inputPassword : any = useRef();
 
-    const [user, setUser] = useState("");
-    const [password, setPassword] = useState("");
+    const [loginUser, setLoginUser] = useState("");
+    const [loginPassword, setLoginPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
     // set focus on first input when component loads
@@ -20,7 +26,7 @@ const Login: React.FC = ( {setUserName, setLoginView} : any) => {
     // reset any error messages when user is typing user or password
     useEffect(() => {
         setErrorMessage("");
-    }, [user, password]);
+    }, [loginUser, loginPassword]);
 
     // calls handleSubmit on function of login form
     const handleLoginClick = async (e : any) => {
@@ -28,19 +34,20 @@ const Login: React.FC = ( {setUserName, setLoginView} : any) => {
         e.preventDefault();
 
         // post request to submit login information
-        console.log(user, password);
         try {
                 const response = await axios.post(`${apiUrl}/login`, {
-                    username: user, password: password,
+                    username: loginUser, password: loginPassword,
                 },
                 { withCredentials: true }
             );
 
-            console.log(response.data);
+            setUsername(response.data.username);
+            setUserId(response.data.id)
+            setPageView("homepage");
             
         } catch (err : any) {
-            // setErrorMessage("Unable to log in")
-            console.error(err)
+            // error handling
+            setErrorMessage(err)
         }
     }
 
@@ -54,8 +61,8 @@ const Login: React.FC = ( {setUserName, setLoginView} : any) => {
                             type="text"
                             id="username"
                             ref={inputUsername}
-                            onChange={(e : any) => setUser(e.target.value)}
-                            value={user}
+                            value={loginUser}
+                            onChange={(e : any) => setLoginUser(e.target.value)}
                         >
                         </input>
                     <label>Password:</label>
@@ -63,8 +70,8 @@ const Login: React.FC = ( {setUserName, setLoginView} : any) => {
                             type="password"
                             id="password"
                             ref={inputPassword}
-                            onChange={(e : any) => setPassword(e.target.value)}
-                            value={password}
+                            value={loginPassword}
+                            onChange={(e : any) => setLoginPassword(e.target.value)}
                             >
                         </input>
                     <button
@@ -72,11 +79,6 @@ const Login: React.FC = ( {setUserName, setLoginView} : any) => {
                         onClick={handleLoginClick}
                     >
                         Login
-                    </button>
-                    <button
-                        type="button"
-                    >
-                        Sign Up
                     </button>
                 </form>
 

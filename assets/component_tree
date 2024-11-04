@@ -2,7 +2,7 @@ App
 L Login/SignUp
 L CardGrid
     L Dashboard
+    L CreateCard
     L EditCard
     L CardApi
-L CreateCard
 L Logout

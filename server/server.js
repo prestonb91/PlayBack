@@ -78,7 +78,7 @@ app.post("/login", async (req, res) => {
         //     return res.status(400).json({ error: "Incorrect username or password"});
         // }
 
-        const { id, username: sessionUser } = userInfo;
+        const { id: id, username: sessionUser } = userInfo;
 
         req.session.user_id = id;
         req.session.username = sessionUser;
@@ -137,13 +137,97 @@ app.post("/logout", (req, res) => {
 
 // App routes
 // get all cards of that user
-app.get("/users/:userId");
+app.get("/users/:userId", async (req, res) => {
+    
+    try {
+
+        const userId = parseInt(req.params.userId);
+
+        const gameCards = await prisma.game_cards.findMany({
+            where: {
+                user_id: userId,
+            },
+            select: {
+                id: true,
+                name: true,
+                rating: true,
+                completion_status: true,
+                review: true,
+                console: true,
+                reference_url: true
+            }
+        })
+    
+        return res.json(gameCards);
+
+    } catch(err) {  
+        console.error(err);
+    }
+
+});
+
+
 // add a card to the user library
-app.post("/users/:userId");
-// edit a module
-app.patch("/modules/:id");
-// delete a module
-app.delete("/modules/:id");
+app.post("/users/:userId", async (req, res) => {
+
+    try {
+        const userId = parseInt(req.params.userId);
+        const formData = req.body.formData;
+
+        const addCard = await prisma.game_cards.create({
+            data: {
+                user_id: userId,
+                name: formData.name, 
+                rating: parseInt(formData.rating),
+                completion_status: formData.completion_status,
+                console: "",
+                review: formData.review,
+                reference_url: formData.reference_url
+            }
+        })
+
+    } catch(err) {
+        console.error(err);
+    }
+
+});
+
+// edit a card
+app.patch("/cards/:cardId", async (req, res) => {
+    try {
+        const cardId = parseInt(req.params.cardId);
+        const formData = req.body.editFormData;
+
+        const editCard = await prisma.game_cards.update({
+            where: {
+                id: cardId,
+            },
+            data: {
+                name: formData.name,
+                rating: parseInt(formData.rating),
+                completion_status: formData.completion_status,
+                review: formData.review,
+                reference_url: formData.reference_url
+            }
+        })
+
+    } catch(err) {
+        console.error(err);
+    }
+});
+
+// delete a card
+app.delete("/cards/:cardId", async (req, res) => {
+    try {
+        const cardId = parseInt(req.params.cardId);
+
+        const deleteCard = await prisma.game_cards.delete({
+            where: { id: cardId }
+        })
+    } catch(err) { 
+        console.error(err);
+    }
+});
 
 // Server validation
 app.get("/", (req, res) => {

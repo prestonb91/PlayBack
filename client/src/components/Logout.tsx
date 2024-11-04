@@ -11,7 +11,7 @@ const Logout: React.FC<Props> = ( { handleLogout }) => {
             <button
                 onClick={handleLogout}
             >
-                Logt Out
+                Log Out
             </button>
         </>
     );

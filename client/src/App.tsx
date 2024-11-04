@@ -1,14 +1,28 @@
 import { useState, useEffect } from 'react'
 import Login from "./components/Login";
-// import SignUp from "./components/SignUp";
-// import CardGrid from "./components/CardGrid";
+import SignUp from "./components/SignUp";
+import Logout from "./components/Logout";
+import CardGrid from "./components/CardGrid";
+import CreateCard from "./components/CreateCard";
 import './App.css'
+import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function App() {
-  const [loginView, setLoginView] = useState<boolean>(true);
-  const [username, setUsername] = useState<string>("");
+  const [pageView, setPageView] = useState<any>("login");
+  const [username, setUsername] = useState<any>("");
+  const [userId, setUserId] = useState<any>(null);
+
+  // handle logout prop sent to logout
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${apiUrl}/logout`, {}, { withCredentials: true});
+      setPageView("login");
+    } catch (err) {
+      console.error("Logout error: ", err)
+    }
+  }
 
   // const checkSession = async () => {
 
@@ -29,32 +43,49 @@ function App() {
   // }, []);
 
   // useEffect(() => {
-  //   if (userName) setPage("Homepage");
-  // }, [userName]);
+  //   if (userId) setPageView("Homepage");
+  // }, [userId]);
 
 
   return (
     <>
-
-      <Login />
-
-      {(loginView) ? (
+      {pageView === "login" ? (
         <>
           <Login 
-            username={setUsername}
-            loginView={setLoginView}
+            setUsername={setUsername}
+            setUserId={setUserId}
+            setPageView={setPageView}
+          />
+          <button
+            onClick={()=>setPageView("signup")}
+          >
+            SignUp
+          </button>
+        </>
+      ) : pageView === "signup" ? (
+        <>
+          <SignUp
+            setPageView={setPageView}
+          />
+        </>
+      ) : pageView === "homepage" ? (
+        <>
+          <Logout 
+            handleLogout={handleLogout}
+          />
+          <h1>{"PlayBack"}</h1>
+          <p>{`Welcome ${username}`}</p>
+          <p>{`UserId: ${userId}`}</p>
+          <CreateCard
+            userId={userId}
+          />
+          <CardGrid
+            userId={userId}
           />
         </>
       ) : (
-
-        <>
-          <h1>{"PlayBack"}</h1>
-          <p>{`Welcome ${username}`}</p>
-          {/* <CardGrid/> */}
-        </>
-
-      )};
-
+        null
+      )}
     </>
   )
 }
