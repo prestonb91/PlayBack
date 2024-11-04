@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import CardWidget from "./CardWidget";
 import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -18,7 +19,9 @@ const initialValues = {
 const CardGrid: React.FC<Props> = ({ userId }) => {
     const [cardGrid, setCardGrid] = useState<any>([]);
     const [cardId, setCardId] = useState<any>();
-    const [editMenuView, setEditMenu] = useState<any>(false);
+    const [singleCard, setSingleCard] = useState<any>();
+    const [recentReview, setRecentReview] = useState<any>([]);
+    const [pageView, setPageView] = useState<any>("homepage");
     const [editFormData, setEditFormData] = useState<any>(initialValues);
 
       // handle fetching all card data based on userId
@@ -34,8 +37,13 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         }
     }
 
+    const handlePageView = (cardId : any) => {
+        setPageView("viewCard");
+        setCardId(cardId);
+    }
+
     const handleEditView = (cardId : any) => {
-        setEditMenu(true);
+        setPageView("editCard");
         setCardId(cardId);
     }
 
@@ -61,7 +69,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     }
 
     const exitEditMenuView = () => {
-        setEditMenu(false);
+        setPageView("homepage");
     }
 
     const deleteCard = async (cardId : any) => {
@@ -73,14 +81,44 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         }
     }
 
-    useEffect(() => {
-        fetchCards(userId)
-    }, [deleteCard, editCard])
+    const fetchGameNews = async(gameName : any) => {
+        console.log(gameName)
 
+        try {
+            const gameIdResponse = await axios.get(`https://opencritic-api.p.rapidapi.com/game/search?criteria=${gameName}`, {
+                headers: {
+                    "X-Rapidapi-Key": "b1cf68ede7msh5d3f6e0ea567059p11cbc6jsn1e51425a161c",
+                    "X-Rapidapi-Host": "opencritic-api.p.rapidapi.com",
+                }
+            })
+
+            const gameId = gameIdResponse.data[0].id;
+            console.log(gameId)
+
+            const gameDataResponse = await axios.get(`https://opencritic-api.p.rapidapi.com/review/game/${gameId}?sort=blend&order=desc`, {
+                headers: {
+                    "X-Rapidapi-Key": "b1cf68ede7msh5d3f6e0ea567059p11cbc6jsn1e51425a161c",
+                    "X-Rapidapi-Host": "opencritic-api.p.rapidapi.com",
+                }
+            })
+
+            console.log(gameDataResponse)
+            setRecentReview(gameDataResponse.data);
+            console.log(recentReview)
+        } catch(err) {
+            console.error("Game news error: ", err)
+        }
+    } 
+ 
+    // BUG: infinite loop, need to update after delete, add, edit. maybe solved with saving as local data state?
+    useEffect(() => {
+        fetchCards(userId) 
+    }, [])
+ 
     return (
 
         <>
-            {!editMenuView ? (
+            {pageView === "homepage" ? (
             <div>
                 {cardGrid.map((item : any, index : any) => {
                     return (
@@ -94,9 +132,13 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                             <p>Url: {item.reference_url}</p>
                             <button
                                 type="button"
-                                onClick={()=>handleEditView(item.id)}
+                                onClick={()=>{
+                                    handlePageView(item.id),
+                                    fetchGameNews(item.name),
+                                    setSingleCard(item);
+                                }}
                             >
-                                Edit
+                                View
                             </button>
                             <button
                                 type="button"
@@ -108,7 +150,39 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     ) 
                 })}
             </div>
-            ) : (
+            ) : pageView === "viewCard" ? (
+                <>
+                <p>Name: {singleCard.name}</p>
+                <p>Rating: {singleCard.rating}</p>
+                <p>Status: {singleCard.completion_status}</p>
+                <p>Review: {singleCard.review}</p>
+                <p>Link: {singleCard.reference_url}</p>
+                <button
+                    type="button"
+                    onClick={()=>{
+                        handleEditView(singleCard.id)
+                    }}
+                >
+                    Edit
+                </button>
+                <button
+                    type="button"
+                    onClick={exitEditMenuView}
+                >
+                    Exit
+                </button>
+
+                <div>
+                    <h1>Reviews</h1>
+                    <div>
+                        <CardWidget 
+                            recentReview={recentReview}
+                        />
+                    </div>
+                </div>
+            </>
+            ) : pageView === "editCard" ? (
+            <>
                 <form>
                     <label>Name</label>
                     <input
@@ -153,7 +227,10 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     </input>
                 <button
                     type="button"
-                    onClick={()=>editCard(cardId)}
+                    onClick={()=>{
+                        editCard(cardId),
+                        setPageView("viewCard")
+                    }}
                 >
                     Save
                 </button>
@@ -164,6 +241,18 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     Exit
                 </button>
                 </form>
+
+                <div>
+                    <h1>Reviews</h1>
+                    <div>
+                        <CardWidget 
+                            recentReview={recentReview}
+                        />
+                    </div>
+                </div>
+            </>
+            ) : (
+                null
             )}
         </>
 

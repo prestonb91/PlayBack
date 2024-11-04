@@ -4,6 +4,7 @@ import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
 import CardGrid from "./components/CardGrid";
 import CreateCard from "./components/CreateCard";
+import NewsWidget from "./components/NewsWidget";
 import './App.css'
 import axios from 'axios';
 
@@ -82,6 +83,7 @@ function App() {
           <CardGrid
             userId={userId}
           />
+          <NewsWidget/>
         </>
       ) : (
         null

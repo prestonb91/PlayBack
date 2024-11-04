@@ -1,8 +1,11 @@
 App 
 L Login/SignUp
+L CreateCard
 L CardGrid
-    L Dashboard
-    L CreateCard
+    Homepage View
+    (Card Map)
+    Single Card View
     L EditCard
-    L CardApi
+    L CardWidget
+L Upcoming Releases Widget
 L Logout
