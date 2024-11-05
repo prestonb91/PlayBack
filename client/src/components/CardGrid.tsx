@@ -21,7 +21,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     const [cardData, setCardData] = useState<any>([]);
     const [cardId, setCardId] = useState<any>();
     const [singleCard, setSingleCard] = useState<any>();
-    const [recentReview, setRecentReview] = useState<any>([]);
+    // const [recentReview, setRecentReview] = useState<any>([]);
     const [pageView, setPageView] = useState<any>("homepage");
     const [editFormData, setEditFormData] = useState<any>(initialValues);
 
@@ -76,7 +76,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
             temp.splice(index, 1, update);
             setCardData(temp)
 
-            const response = await axios.patch(`${apiUrl}/cards/${cardId}`, {
+            await axios.patch(`${apiUrl}/cards/${cardId}`, {
                 editFormData
             }, 
             { withCredentials: true});
@@ -91,7 +91,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
 
     const deleteCard = async (cardId : any) => {
         try {
-            const response = await axios.delete(`${apiUrl}/cards/${cardId}`,
+            await axios.delete(`${apiUrl}/cards/${cardId}`,
             { withCredentials: true});
         } catch(err) {
             console.error("Card delete error: ", err)
@@ -102,7 +102,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         const temp = [...cardData]
         temp.splice(index, 1);
         setCardData(temp)
-        const deleted = await deleteCard(cardId)
+        await deleteCard(cardId)
     }
  
     // const fetchGameNews = async(gameName : any) => {

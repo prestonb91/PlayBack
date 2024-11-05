@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -39,7 +39,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
             temp.push(formData)
             setCardData(temp)
 
-            const response = await axios.post(`${apiUrl}/users/${userId}`, {
+            await axios.post(`${apiUrl}/users/${userId}`, {
                 formData
             }, 
             { withCredentials: true});
@@ -48,7 +48,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
               console.error("Create module error ", err)
             }
     }
-    
+
     return (
         <>
             <form>
