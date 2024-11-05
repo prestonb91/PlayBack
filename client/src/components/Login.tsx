@@ -17,6 +17,7 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
     const [loginUser, setLoginUser] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    // const [user, setUser] = useState<any>();
 
     // set focus on first input when component loads
     useEffect(() => {
@@ -43,7 +44,6 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
 
             setUsername(response.data.username);
             setUserId(response.data.id)
-            setPageView("homepage");
             
         } catch (err : any) {
             console.error(err.response.data.error);

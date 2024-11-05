@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
@@ -23,24 +23,6 @@ function App() {
       console.error("Logout error: ", err)
     }
   }
-
-  // const checkSession = async () => {
-
-  //   const response = await fetch(`${apiUrl}/sessions`, {
-  //     credentials: "include",
-  //   });
-
-  //   const { userName } = await response.json();
-
-  //   if (userName) {
-  //     setUserName(userName);
-  //   } else setPage("Login")
-
-  // }
-
-  // useEffect(() => {
-  //   checkSession()
-  // }, []);
 
   // useEffect(() => {
   //   if (userId) setPageView("Homepage");

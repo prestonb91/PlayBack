@@ -60,6 +60,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                         onChange={handleInputChange}
                     >
                     </input>
+                    <br/>
                 <label>Rating</label>
                     <input
                         type="number"
@@ -70,6 +71,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                         onChange={handleInputChange}
                     >
                     </input>
+                    <br/>
                 <label>Status</label>
                     <input
                         type="checkbox"
@@ -78,6 +80,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                         onChange={handleInputChange}
                     >
                     </input>
+                    <br/>
                 <label>Review</label>
                     <input
                         type="text"
@@ -86,6 +89,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                         onChange={handleInputChange}
                     >
                     </input>
+                    <br/>
                 <label>Link</label>
                     <input
                         type="text"
@@ -94,6 +98,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                         onChange={handleInputChange}
                     >
                     </input>
+                    <br/>
                 <button
                     type="submit"
                     onClick={handleSubmit}

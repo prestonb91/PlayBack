@@ -24,10 +24,17 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     // const [recentReview, setRecentReview] = useState<any>([]);
     const [pageView, setPageView] = useState<any>("homepage");
     const [editFormData, setEditFormData] = useState<any>(initialValues);
+    
+    let totalCounter = cardData.length;
+    
+    let finishedCount = 0;
+    for (let item of cardData) {
+        if (item.completion_status) {
+            finishedCount++;
+        }
+    }
 
-    // let totalCounter = cardData.length;
-    // let finishedCounter = 0;
-    // let completionRate = 0;
+    let completionRate = Math.round((finishedCount / totalCounter) * 100);
 
       // handle fetching all card data based on userId
     const fetchCards = async (userId : any) => {
@@ -136,26 +143,30 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
 
     const checkboxHandler = (status : any) => {
         if (status) {
-            return "True"   
+            return "Finished!"   
         } else {
-            return "False"
+            return "Uncompleted"
         }
     }
 
-    // const counter = () => {
+    const starRating = (stars : any) => {
         
-    //     let totalCounter = cardData.length;
+        let starRating = "☆☆☆☆☆";
 
-    //     for (let item of cardData) {
-    //         if (item.completion_status) {
-    //             finishedCounter++;
-    //         }
-    //     }
+        function replaceChar(str: any, index: any, char: any) {
+            const array = str.split(``)
+            array[index] = char;
+            return array.join(``)
+        }
 
-    //     completionRate = (finishedCounter / totalCounter) * 100;
-    //     console.log(finishedCounter)
-    //     console.log(completionRate)
-    // }
+        for (let i = 0; i < stars; i++) {
+            starRating = replaceChar(starRating, i, "⭐️")
+            starRating = starRating.slice(0, -1);
+        }
+
+        return starRating;
+
+    }
 
     useEffect(() => {
         fetchCards(userId)
@@ -166,11 +177,11 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         <>
 
             {/* include as component */}
-            {/* <div>
+            <div>
                 <p>Total: {totalCounter}</p>
-                <p>Finished: {finishedCounter}</p>
+                <p>Finished: {finishedCount}</p>
                 <p>Completion Rate: {completionRate}%</p>
-            </div> */}
+            </div>
 
             <CreateCard
                 userId={userId}
@@ -188,10 +199,12 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                             key={index}
                         >
                             <p>Name: {item.name}</p>
-                            <p>Rating: {item.rating}</p>
+                            <p>Rating: {starRating(item.rating)}</p>
                             <p>Status: {checkboxHandler(item.completion_status)}</p>
                             <p>Review: {item.review}</p>
-                            <p>Url: {item.reference_url}</p>
+                            <img
+                                src={item.reference_url}
+                            />
                             <button
                                 type="button"
                                 onClick={()=>{
@@ -218,7 +231,9 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                 <p>Rating: {singleCard.rating}</p>
                 <p>Status: {checkboxHandler(singleCard.completion_status)}</p>
                 <p>Review: {singleCard.review}</p>
-                <p>Url: {singleCard.reference_url}</p>
+                <img
+                    src={singleCard.reference_url}
+                />
                 <button
                     type="button"
                     onClick={()=>{
@@ -254,7 +269,8 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                         onChange={handleInputChange}
                     >
                     </input>
-                <label>Rating</label>
+                    <br/>
+                    <label>Rating</label>
                     <input
                         type="number"
                         name={"rating"}
@@ -264,7 +280,8 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                         onChange={handleInputChange}
                     >
                     </input>
-                <label>Status</label>
+                    <br/>
+                    <label>Status</label>
                     <input
                         type="checkbox"
                         name={"completion_status"}
@@ -273,7 +290,8 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                         onChange={handleInputChange}
                     >
                     </input>
-                <label>Review</label>
+                    <br/>
+                    <label>Review</label>
                     <input
                         type="text"
                         name={"review"}
@@ -281,7 +299,8 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                         onChange={handleInputChange}
                     >
                     </input>
-                <label>Link</label>
+                    <br/>
+                    <label>Link</label>
                     <input
                         type="text"
                         name={"reference_url"}
@@ -289,6 +308,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                         onChange={handleInputChange}
                     >
                     </input>
+                    <br/>
                 <button
                     type="button"
                     onClick={()=>{
@@ -300,7 +320,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                 </button>
                 <button
                     type="button"
-                    onClick={exitEditMenuView}
+                    onClick={()=>{setPageView("viewCard")}}
                 >
                     Exit
                 </button>
