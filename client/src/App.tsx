@@ -3,8 +3,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
 import CardGrid from "./components/CardGrid";
-import CreateCard from "./components/CreateCard";
-import NewsWidget from "./components/NewsWidget";
+// import NewsWidget from "./components/NewsWidget";
 import './App.css'
 import axios from 'axios';
 
@@ -47,7 +46,6 @@ function App() {
   //   if (userId) setPageView("Homepage");
   // }, [userId]);
 
-
   return (
     <>
       {pageView === "login" ? (
@@ -76,14 +74,10 @@ function App() {
           />
           <h1>{"PlayBack"}</h1>
           <p>{`Welcome ${username}`}</p>
-          <p>{`UserId: ${userId}`}</p>
-          <CreateCard
-            userId={userId}
-          />
           <CardGrid
             userId={userId}
           />
-          <NewsWidget/>
+          {/* <NewsWidget/> */}
         </>
       ) : (
         null

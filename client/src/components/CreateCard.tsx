@@ -5,6 +5,8 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 interface Props {
     userId: any;
+    cardData: any;
+    setCardData: any;
 }
 
 const initialValues = {
@@ -15,38 +17,38 @@ const initialValues = {
     reference_url: ""
 }
 
-const CreateCard: React.FC<Props> = ( { userId }) => {
+const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
     const [formData, setFormData] = useState<any>(initialValues);
-    // const [check, setCheck] = useState<any>(false);
 
     const handleInputChange = (e : any) => {
-        const { name, value } = e.target;
-        // console.log(value)
+        const value = e.target.type === "checkbox" ? e.target.checked: e.target.value;
 
         setFormData ({
             ...formData,
-            [name]: value,
+            [e.target.name]: value,
         })
+
     }
 
     const handleSubmit = async (e : any) => {
-        e.preventDefault();
-
+        e.preventDefault(); 
         //send form data to server
         try {
+            
+            const temp = [...cardData]
+            temp.push(formData)
+            setCardData(temp)
+
             const response = await axios.post(`${apiUrl}/users/${userId}`, {
                 formData
             }, 
             { withCredentials: true});
+
         } catch (err) {
               console.error("Create module error ", err)
             }
     }
-
-    useEffect(() => {
-        handleSubmit
-    }, [])
-
+    
     return (
         <>
             <form>
@@ -62,11 +64,12 @@ const CreateCard: React.FC<Props> = ( { userId }) => {
                     <input
                         type="number"
                         name={"rating"}
+                        min="0"
+                        max="5"
                         value={formData.rating}
                         onChange={handleInputChange}
                     >
                     </input>
-                {/* TODO implement boolean */}
                 <label>Status</label>
                     <input
                         type="checkbox"

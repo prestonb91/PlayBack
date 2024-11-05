@@ -46,8 +46,8 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
             setPageView("homepage");
             
         } catch (err : any) {
-            // error handling
-            setErrorMessage(err)
+            console.error(err.response.data.error);
+            setErrorMessage(err.response.data.error);
         }
     }
 
@@ -81,11 +81,8 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
                         Login
                     </button>
                 </form>
-
         </>
-
     )
-
 }
 
 export default Login;

@@ -23,7 +23,7 @@ app.set("trust proxy", 1);
 // Secrety key
 const sessionSecretKey = "playback";
 
-// Middleware
+// Cors middleware
 app.use(cors({
     origin: FRONTEND_URL,
     credentials: true,
@@ -42,6 +42,7 @@ app.use(session({
     }
 }))
 
+//use with useeffect empty dependency
 app.get("/sessions", async (req, res) => {
     if (req.session) {
         console.log(req.session);
@@ -66,17 +67,16 @@ app.post("/login", async (req, res) => {
 
         //validation
         // if no existing info, return error
-        // if (userInfo === null) {
-        //     return res.status(400).json({error: "User does not exist"});
-        // }
+        if (userInfo === null) {
+            return res.status(400).json({error: "User does not exist"});
+        }
 
-        // hash the user's password
-        // const isMatch = await bcrypt.compare(password, userInfo.password);
-        // console.log(isMatch);
+        // // hash the user's password
+        const isMatch = await bcrypt.compare(password, userInfo.password);
 
-        // if (!matchCheck) {
-        //     return res.status(400).json({ error: "Incorrect username or password"});
-        // }
+        if (!isMatch) {  
+            return res.status(400).json({ error: "Username and password do not match"});
+        }
 
         const { id: id, username: sessionUser } = userInfo;
 
@@ -197,6 +197,10 @@ app.patch("/cards/:cardId", async (req, res) => {
     try {
         const cardId = parseInt(req.params.cardId);
         const formData = req.body.editFormData;
+
+        // for (let item of formData) {
+        //     console.log(item)
+        // }
 
         const editCard = await prisma.game_cards.update({
             where: {
