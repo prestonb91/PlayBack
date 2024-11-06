@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
+    "start": "nodemon ./src/server.js",
     "build": "npm install; npm run migrate-deploy; npm run seed-data",
     "seed-data": "prisma db seed",
     "migrate-deploy": "npx prisma migrate deploy"

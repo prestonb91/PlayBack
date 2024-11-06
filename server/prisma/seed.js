@@ -80,7 +80,6 @@ async function main() {
             reference_url: "",
         }
     })
-    console.log(user1, gameCard1, gameCard2)
 }
 
 main()

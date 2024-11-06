@@ -96,20 +96,17 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         setPageView("homepage");
     }
 
-    const deleteCard = async (cardId : any) => {
+    const handleDeleteCard = async (cardId : any, index: number) => {
+        const temp = [...cardData]
+        temp.splice(index, 1);
+        setCardData(temp)
+        
         try {
             await axios.delete(`${apiUrl}/cards/${cardId}`,
             { withCredentials: true});
         } catch(err) {
             console.error("Card delete error: ", err)
         }
-    }
-
-    const handleDeleteCard = async (cardId : any, index: number) => {
-        const temp = [...cardData]
-        temp.splice(index, 1);
-        setCardData(temp)
-        await deleteCard(cardId)
     }
  
     // const fetchGameNews = async(gameName : any) => {

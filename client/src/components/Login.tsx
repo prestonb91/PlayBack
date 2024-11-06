@@ -1,5 +1,5 @@
-import axios from "axios";
 import React from "react";
+import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -41,9 +41,9 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
                 },
                 { withCredentials: true }
             );
-
             setUsername(response.data.username);
             setUserId(response.data.id)
+            setPageView("homepage");
             
         } catch (err : any) {
             console.error(err.response.data.error);

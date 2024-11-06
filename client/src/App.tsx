@@ -24,10 +24,6 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   if (userId) setPageView("Homepage");
-  // }, [userId]);
-
   return (
     <>
       {pageView === "login" ? (
