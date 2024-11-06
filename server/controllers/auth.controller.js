@@ -49,8 +49,9 @@ const loginHandler = async (req, res) => {
 const signUpHandler = async (req, res) => {
     try {
         const { username: newUsername, password: plainPassword} = req.body;
-
+        
         // Hash password
+        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
 
         // Add into user table new user and hashed password, get back userId
