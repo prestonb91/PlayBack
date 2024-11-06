@@ -2,11 +2,11 @@ const authModel = require("../models/auth.model");
 const bcrypt = require("bcrypt");
 
 const getSessions = async (req, res) => {
-    if (req.session) {
-        console.log(req.session);
+    console.log("backend response", req.session)
+    if (req.session.user_id && req.session.username) {
         return res.json({
             user_id: req.session.user_id,
-            username: req.sessions.username
+            username: req.session.username
         })
     }
 }

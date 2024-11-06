@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-import Logout from "./components/Logout";
+import Login from "./components/auth/Login";
+import SignUp from "./components/auth/SignUp";
+import Logout from "./components/auth/Logout";
 import CardGrid from "./components/CardGrid";
 // import NewsWidget from "./components/NewsWidget";
 import './App.css'
@@ -11,10 +11,9 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 function App() {
   const [pageView, setPageView] = useState<any>("login");
-  const [username, setUsername] = useState<any>("");
   const [userId, setUserId] = useState<any>(null);
+  const [username, setUsername] = useState<any>("");
 
-  // handle logout prop sent to logout
   const handleLogout = async () => {
     try {
       await axios.post(`${apiUrl}/logout`, {}, { withCredentials: true});
@@ -23,6 +22,24 @@ function App() {
       console.error("Logout error: ", err)
     }
   }
+
+  const checkLoggedIn = async () => {
+    const response = await axios.get(`${apiUrl}/sessions`, {
+      withCredentials: true,
+    })
+    if (response.status === 200) {
+      console.log("front end receive", response.data)
+      setUserId(response.data.user_id)
+      setUsername(response.data.username)
+      setPageView("homepage")
+    } else {
+      console.error("User not logged in")
+    }
+  }
+
+  useEffect(()=>{
+    checkLoggedIn();
+  }, [])
 
   return (
     <>

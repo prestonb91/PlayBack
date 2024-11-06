@@ -17,33 +17,32 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
     const [loginUser, setLoginUser] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    // const [user, setUser] = useState<any>();
 
-    // set focus on first input when component loads
+    // Set focus on first input when component loads
     useEffect(() => {
         inputUsername.current.focus();
     }, []);
 
-    // reset any error messages when user is typing user or password
+    // Reset any error messages when user is typing user or password
     useEffect(() => {
         setErrorMessage("");
     }, [loginUser, loginPassword]);
 
     // calls handleSubmit on function of login form
     const handleLoginClick = async (e : any) => {
-        // prevents default behavior form which is reload page
+        // Prevents default behavior form which is reload page
         e.preventDefault();
-
-        // post request to submit login information
+        // Post request to submit login information
         try {
                 const response = await axios.post(`${apiUrl}/login`, {
                     username: loginUser, password: loginPassword,
                 },
                 { withCredentials: true }
             );
+
             setUsername(response.data.username);
             setUserId(response.data.id)
-            setPageView("homepage");
+            setPageView("homepage"); 
             
         } catch (err : any) {
             console.error(err.response.data.error);

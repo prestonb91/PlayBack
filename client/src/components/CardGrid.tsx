@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import CreateCard from "./CreateCard";
-// import CardWidget from "./CardWidget";
+// import CardReviewWidget from "./widgets/CardReviewWidget";
 import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -24,19 +24,8 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     // const [recentReview, setRecentReview] = useState<any>([]);
     const [pageView, setPageView] = useState<any>("homepage");
     const [editFormData, setEditFormData] = useState<any>(initialValues);
-    
-    let totalCounter = cardData.length;
-    
-    let finishedCount = 0;
-    for (let item of cardData) {
-        if (item.completion_status) {
-            finishedCount++;
-        }
-    }
 
-    let completionRate = Math.round((finishedCount / totalCounter) * 100);
-
-      // handle fetching all card data based on userId
+    // Fetch all cards based on userId
     const fetchCards = async (userId : any) => {
         try {
             const response = await axios.get(`${apiUrl}/users/${userId}`, 
@@ -44,37 +33,24 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
 
             const allCards = response.data;
             setCardData(allCards); 
- 
+
         } catch (err) { 
             console.error("Card fetch error: ", err)
         }
     }
 
-    const handlePageView = (cardId : any) => {
-        setPageView("viewCard");
-        setCardId(cardId);
-    }
-
-    const handleEditView = (cardId : any) => {
-        setPageView("editCard");
-        setCardId(cardId);
-        setEditFormData(singleCard);
-    }
-
+    // Handler function to update setEditFormData with changes
     const handleInputChange = (e : any) => {
-
         const value = e.target.type === "checkbox" ? e.target.checked: e.target.value;
 
         setEditFormData({
             ...editFormData,
             [e.target.name]: value,
         })
-        console.log(editFormData)
     }
 
     const editCard = async (cardId : any) => {
         try {
-
             const temp = [...cardData]
             const index = temp.indexOf(singleCard)
             
@@ -92,15 +68,12 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
             }
     }
 
-    const exitEditMenuView = () => {
-        setPageView("homepage");
-    }
-
+    // Handler function to delete card
     const handleDeleteCard = async (cardId : any, index: number) => {
         const temp = [...cardData]
         temp.splice(index, 1);
         setCardData(temp)
-        
+
         try {
             await axios.delete(`${apiUrl}/cards/${cardId}`,
             { withCredentials: true});
@@ -109,7 +82,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         }
     }
  
-    // const fetchGameNews = async(gameName : any) => {
+    // const fetchGameReviews = async(gameName : any) => {
     //     console.log(gameName)
 
     //     try {
@@ -138,14 +111,19 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     //     }
     // } 
 
-    const checkboxHandler = (status : any) => {
-        if (status) {
-            return "Finished!"   
-        } else {
-            return "Uncompleted"
-        }
+    // Helper functions to handle page view switches
+    const handlePageView = (cardId : any) => {
+        setPageView("viewCard");
+        setCardId(cardId);
     }
 
+    const handleEditView = (cardId : any) => {
+        setPageView("editCard");
+        setCardId(cardId);
+        setEditFormData(singleCard);
+    }
+
+    // Function to handle star rating
     const starRating = (stars : any) => {
         
         let starRating = "☆☆☆☆☆";
@@ -157,13 +135,32 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         }
 
         for (let i = 0; i < stars; i++) {
-            starRating = replaceChar(starRating, i, "⭐️")
-            starRating = starRating.slice(0, -1);
+            starRating = replaceChar(starRating, i, "⭐️");
         }
 
+        starRating = starRating.slice(0,6)
         return starRating;
 
     }
+
+    // Handler to return value based on completion status
+    const checkboxHandler = (status : any) => {
+        if (status) {
+            return "Finished!"   
+        } else {
+            return "Uncompleted"
+        }
+    }
+
+    // Total counter variables
+    let totalCounter = cardData.length;
+    let finishedCount = 0;
+    for (let item of cardData) {
+        if (item.completion_status) {
+            finishedCount++;
+        }
+    }
+    let completionRate = Math.round((finishedCount / totalCounter) * 100);
 
     useEffect(() => {
         fetchCards(userId)
@@ -173,7 +170,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
 
         <>
 
-            {/* include as component */}
+            {/* TODO: include as components */}
             <div>
                 <p>Total: {totalCounter}</p>
                 <p>Finished: {finishedCount}</p>
@@ -206,7 +203,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                                 type="button"
                                 onClick={()=>{
                                     handlePageView(item.id),
-                                    // fetchGameNews(item.name),
+                                    // fetchGameReviews(item.name),
                                     setSingleCard(item);
                                 }}
                             >
@@ -225,7 +222,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
             ) : pageView === "viewCard" ? (
                 <>
                 <p>Name: {singleCard.name}</p>
-                <p>Rating: {singleCard.rating}</p>
+                <p>Rating: {starRating(singleCard.rating)}</p>
                 <p>Status: {checkboxHandler(singleCard.completion_status)}</p>
                 <p>Review: {singleCard.review}</p>
                 <img
@@ -241,18 +238,18 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                 </button>
                 <button
                     type="button"
-                    onClick={exitEditMenuView}
+                    onClick={()=>setPageView("homepage")}
                 >
                     Exit
                 </button>
 
                 <div>
                     <h1>Reviews</h1>
-                    {/* <div>
-                        <CardWidget 
+                    <div>
+                        {/* <CardReviewWidget 
                             recentReview={recentReview}
-                        />
-                    </div> */}
+                        /> */}
+                    </div>
                 </div>
             </>
             ) : pageView === "editCard" ? (
@@ -325,11 +322,11 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
 
                 <div>
                     <h1>Reviews</h1>
-                    {/* <div>
-                        <CardWidget 
+                    <div>
+                        {/* <CardReviewWidget 
                             recentReview={recentReview}
-                        />
-                    </div> */}
+                        /> */}
+                    </div>
                 </div>
             </>
             ) : (
