@@ -17,7 +17,7 @@ const SignUp: React.FC<Props> = ( { setPageView }) => {
     const handleSignUp = async (e : any) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${apiUrl}/signup`, {
+            await axios.post(`${apiUrl}/signup`, {
                 username: newUser, password: newPassword,
             },
             { withCredentials: true}
