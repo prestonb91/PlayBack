@@ -160,21 +160,26 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
             finishedCount++;
         }
     }
-    let completionRate = Math.round((finishedCount / totalCounter) * 100);
+
+    const completionRate = () => {
+        if (totalCounter > 0) {
+            return Math.round((finishedCount / totalCounter) * 100);
+        } else {
+            return 0
+        }
+     }
 
     useEffect(() => {
         fetchCards(userId)
     },[])
  
     return (
-
         <>
-
             {/* TODO: include as components */}
             <div>
-                <p>Total: {totalCounter}</p>
-                <p>Finished: {finishedCount}</p>
-                <p>Completion Rate: {completionRate}%</p>
+                <div>Total: {totalCounter}</div>
+                <div>Finished: {finishedCount}</div>
+                <div>Completion Rate: {completionRate()}%</div>
             </div>
 
             <CreateCard
@@ -184,22 +189,23 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
             />
 
             {pageView === "homepage" ? (
-            <div>
-
+            <div className="border-2 w-3/5 h-max-screen overflow-y-scroll grid grid-cols-3 gap-3 absolute top-36 left-72">
                 {cardData.map((item : any, index : any) => {
 
                     return (
                         <div
+                            className="border-2 p-2 m-1"
                             key={index}
                         >
-                            <p>Name: {item.name}</p>
-                            <p>Rating: {starRating(item.rating)}</p>
-                            <p>Status: {checkboxHandler(item.completion_status)}</p>
-                            <p>Review: {item.review}</p>
+                            <div>Name: {item.name}</div>
+                            <div>Rating: {starRating(item.rating)}</div>
+                            <div>Status: {checkboxHandler(item.completion_status)}</div>
+                            <div>Review: {item.review}</div>
                             <img
                                 src={item.reference_url}
                             />
                             <button
+                                className="border-2"
                                 type="button"
                                 onClick={()=>{
                                     handlePageView(item.id),
@@ -210,6 +216,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                                 View
                             </button>
                             <button
+                                className="border-2"
                                 type="button"
                                 onClick={()=>handleDeleteCard(item.id, index)}
                             >
@@ -221,10 +228,10 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
             </div>
             ) : pageView === "viewCard" ? (
                 <>
-                <p>Name: {singleCard.name}</p>
-                <p>Rating: {starRating(singleCard.rating)}</p>
-                <p>Status: {checkboxHandler(singleCard.completion_status)}</p>
-                <p>Review: {singleCard.review}</p>
+                <div>Name: {singleCard.name}</div>
+                <div>Rating: {starRating(singleCard.rating)}</div>
+                <div>Status: {checkboxHandler(singleCard.completion_status)}</div>
+                <div>Review: {singleCard.review}</div>
                 <img
                     src={singleCard.reference_url}
                 />

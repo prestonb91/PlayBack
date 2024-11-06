@@ -3,8 +3,7 @@ import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import Logout from "./components/auth/Logout";
 import CardGrid from "./components/CardGrid";
-// import NewsWidget from "./components/NewsWidget";
-import './App.css'
+import NewsTickerWidget from "./components/widgets/NewsTickerWidget";
 import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -28,7 +27,6 @@ function App() {
       withCredentials: true,
     })
     if (response.status === 200) {
-      console.log("front end receive", response.data)
       setUserId(response.data.user_id)
       setUsername(response.data.username)
       setPageView("homepage")
@@ -63,17 +61,21 @@ function App() {
           />
         </>
       ) : pageView === "homepage" ? (
-        <>
-          <Logout 
-            handleLogout={handleLogout}
-          />
-          <h1>{"PlayBack"}</h1>
-          <p>{`Welcome ${username}`}</p>
+        <div>
+          <div>
+            <Logout 
+              handleLogout={handleLogout}
+            />
+          </div>
+          <div className="text-center">{"PlayBack"}</div>
+          <div>{`Welcome ${username}`}</div>
           <CardGrid
             userId={userId}
           />
-          {/* <NewsWidget/> */}
-        </>
+          <div className="border-2 w-1/5 right-0 top-36 absolute h-max-screen overflow-y-scroll">
+            <NewsTickerWidget/>
+          </div>
+        </div>
       ) : (
         null
       )}

@@ -51,9 +51,10 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
 
     return (
         <>
-            <form>
-                <label>Name</label>
+            <form className="border-2 w-1/5 h-lvh overflow-y-scroll p-2">
+                <label className="p-1">Name</label>
                     <input
+                        className="border-2 m-1"
                         type="text"
                         name={"name"}
                         value={formData.name}
@@ -61,8 +62,9 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     >
                     </input>
                     <br/>
-                <label>Rating</label>
-                    <input
+                <label className="p-1">Star Rating</label>
+                    <input           
+                        className="border-2 m-1"           
                         type="number"
                         name={"rating"}
                         min="0"
@@ -72,8 +74,9 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     >
                     </input>
                     <br/>
-                <label>Status</label>
+                <label className="p-1">Status</label>
                     <input
+                        className="border-2 m-1"                    
                         type="checkbox"
                         name={"completion_status"}
                         value={formData.completion_status}
@@ -81,8 +84,9 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     >
                     </input>
                     <br/>
-                <label>Review</label>
+                <label className="p-1">Review</label>
                     <input
+                        className="border-2 h-1/5 m-1"                    
                         type="text"
                         name={"review"}
                         value={formData.review}
@@ -90,8 +94,9 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     >
                     </input>
                     <br/>
-                <label>Link</label>
+                <label className="p-1">Cover Image Link</label>
                     <input
+                        className="border-2 m-1"                    
                         type="text"
                         name={"reference_url"}
                         value={formData.reference_url}
@@ -100,6 +105,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     </input>
                     <br/>
                 <button
+                    className="border-2 m-1"
                     type="submit"
                     onClick={handleSubmit}
                 >Add Game

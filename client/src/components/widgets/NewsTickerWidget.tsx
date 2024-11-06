@@ -1,7 +1,7 @@
 // import axios from "axios"
 // import { useState, useEffect } from "react"
 
-// const NewsWidget: React.FC = () => {
+const NewsTickerWidget: React.FC = () => {
 //     const [recentlyReleased, setRecentlyReleased] = useState<any>([]);
 //     const [upcomingGames, setUpcomingGames] = useState<any>([]);
 
@@ -45,55 +45,55 @@
 //         fetchUpcomingGames()
 //     }, [])
 
-//     return (
-//         <>
-//             <h2>Recently Released Games</h2>
-//             {recentlyReleased.map((item : any, index : any) => {
-//                 return (
-//                 <div
-//                     key={index}
-//                 >
-//                     <p>{item.name}</p>
-//                     <p>{item.topCriticScore}</p>
-//                     <p>
-//                     {item.Platforms.map((item : any, index : any) => {
-//                         return (
-//                             <div
-//                                 key={index}
-//                             >
-//                             {item.name}</div>
-//                     )
-//                     })}
-//                     </p>
-//                     <p>{item.firstReleaseDate.slice(0,10)}</p>
-//                 </div>
-//                 )
-//             })}
+    return (
+        <>
+            <h2>Recently Released Games</h2>
+            {/* {recentlyReleased.map((item : any, index : any) => {
+                return (
+                <div
+                    key={index}
+                >
+                    <p>{item.name}</p>
+                    <p>{item.topCriticScore}</p>
+                    <p>
+                    {item.Platforms.map((item : any, index : any) => {
+                        return (
+                            <div
+                                key={index}
+                            >
+                            {item.name}</div>
+                    )
+                    })}
+                    </p>
+                    <p>{item.firstReleaseDate.slice(0,10)}</p>
+                </div>
+                )
+            })} */}
 
-//             <h2>Upcoming Games</h2>
-//             {upcomingGames.map((item : any, index : any)=> {
-//                 return (
-//                 <div
-//                     key={index}
-//                 >
-//                     <p>{item.name}</p>
-//                     <p>
-//                     {item.Platforms.map((item : any, index: any) => {
-//                         return (
-//                             <div    
-//                                 key={index}
-//                             >
-//                             {item.name}</div>
-//                     )
-//                     })}
-//                     </p>
-//                     <p>{item.firstReleaseDate.slice(0,10)}</p>
-//                 </div>
-//                 )
-//             })}
-//         </>
-//     )
-// }
+            <h2>Upcoming Games</h2>
+            {/* {upcomingGames.map((item : any, index : any)=> {
+                return (
+                <div
+                    key={index}
+                >
+                    <p>{item.name}</p>
+                    <p>
+                    {item.Platforms.map((item : any, index: any) => {
+                        return (
+                            <div    
+                                key={index}
+                            >
+                            {item.name}</div>
+                    )
+                    })}
+                    </p>
+                    <p>{item.firstReleaseDate.slice(0,10)}</p>
+                </div>
+                )
+            })} */}
+        </>
+    )
+}
 
 
-// export default NewsWidget;
+export default NewsTickerWidget;
