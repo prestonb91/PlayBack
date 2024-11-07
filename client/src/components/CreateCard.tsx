@@ -90,18 +90,17 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     <br/>
                 <label className="p-1">Review</label>
                 <br/>
-                    <input
+                    <textarea
                         className="border-2 h-28 m-1 w-11/12 text-black"                    
-                        type="text"
                         name={"review"}
                         value={formData.review}
                         onChange={handleInputChange}
                     >
-                    </input>
+                    </textarea>
                     <br/>
                 <label className="p-1">Cover Image Link</label>
                     <input
-                        className="border-2 m-1  w-11/12"                    
+                        className="border-2 m-1  w-11/12 text-black"                    
                         type="text"
                         name={"reference_url"}
                         value={formData.reference_url}

@@ -52,11 +52,13 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
 
     return (
         <>
-            <h2>Login Page</h2>
-                <p>{errorMessage}</p>
-                <form>
-                    <label>Username:</label>
+            <div>Login Page</div>
+            <div className="flex">
+                <div className="text-red-500">{errorMessage}</div>
+                <form className="border-2 w-1/4 h-48 p-5">
+                    <label className="text-white">Username:</label>
                         <input
+                            className="text-black mb-2"
                             type="text"
                             id="username"
                             ref={inputUsername}
@@ -64,8 +66,9 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
                             onChange={(e : any) => setLoginUser(e.target.value)}
                         >
                         </input>
-                    <label>Password:</label>
+                    <label className="text-white">Password:</label>
                         <input
+                            className="text-black"
                             type="password"
                             id="password"
                             ref={inputPassword}
@@ -74,12 +77,14 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
                             >
                         </input>
                     <button
+                        className="border text-white m-2"
                         type="button"
                         onClick={handleLoginClick}
                     >
                         Login
                     </button>
                 </form>
+            </div>
         </>
     )
 }

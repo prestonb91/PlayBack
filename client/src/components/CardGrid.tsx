@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import CreateCard from "./CreateCard";
-// import CardReviewWidget from "./widgets/CardReviewWidget";
+import CardReviewWidget from "./widgets/CardReviewWidget";
 import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -21,7 +21,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     const [cardData, setCardData] = useState<any>([]);
     const [cardId, setCardId] = useState<any>();
     const [singleCard, setSingleCard] = useState<any>();
-    // const [recentReview, setRecentReview] = useState<any>([]);
+    const [recentReview, setRecentReview] = useState<any>([]);
     const [pageView, setPageView] = useState<any>("homepage");
     const [editFormData, setEditFormData] = useState<any>(initialValues);
 
@@ -81,35 +81,35 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
             console.error("Card delete error: ", err)
         }
     }
- 
-    // const fetchGameReviews = async(gameName : any) => {
-    //     console.log(gameName)
+    
+    const fetchGameReviews = async(gameName : any) => {
+        let gameId;
+        try {
+            const gameIdResponse = await axios.get(`https://opencritic-api.p.rapidapi.com/game/search?criteria=${gameName}`, {
+                headers: {
+                    "X-Rapidapi-Key": "b1cf68ede7msh5d3f6e0ea567059p11cbc6jsn1e51425a161c",
+                    "X-Rapidapi-Host": "opencritic-api.p.rapidapi.com",
+                }
+            })
 
-    //     try {
-    //         const gameIdResponse = await axios.get(`https://opencritic-api.p.rapidapi.com/game/search?criteria=${gameName}`, {
-    //             headers: {
-    //                 "X-Rapidapi-Key": "b1cf68ede7msh5d3f6e0ea567059p11cbc6jsn1e51425a161c",
-    //                 "X-Rapidapi-Host": "opencritic-api.p.rapidapi.com",
-    //             }
-    //         })
+            if(gameIdResponse.data[0].id) {
+                    gameId = gameIdResponse.data[0].id;
+            } else {
+                return "No game review data available. Check game name if spelled correctly."
+            }
 
-    //         const gameId = gameIdResponse.data[0].id;
-    //         console.log(gameId)
-
-    //         const gameDataResponse = await axios.get(`https://opencritic-api.p.rapidapi.com/review/game/${gameId}?sort=blend&order=desc`, {
-    //             headers: {
-    //                 "X-Rapidapi-Key": "b1cf68ede7msh5d3f6e0ea567059p11cbc6jsn1e51425a161c",
-    //                 "X-Rapidapi-Host": "opencritic-api.p.rapidapi.com",
-    //             }
-    //         })
-
-    //         console.log(gameDataResponse)
-    //         setRecentReview(gameDataResponse.data);
-    //         console.log(recentReview)
-    //     } catch(err) {
-    //         console.error("Game news error: ", err)
-    //     }
-    // } 
+            const gameDataResponse = await axios.get(`https://opencritic-api.p.rapidapi.com/review/game/${gameId}?sort=blend&order=desc`, {
+                headers: {
+                    "X-Rapidapi-Key": "b1cf68ede7msh5d3f6e0ea567059p11cbc6jsn1e51425a161c",
+                    "X-Rapidapi-Host": "opencritic-api.p.rapidapi.com",
+                }
+            })
+            console.log(gameDataResponse.data)
+            setRecentReview(gameDataResponse.data);
+        } catch(err) {
+            console.error("Game news error: ", err)
+        }
+    } 
 
     // Helper functions to handle page view switches
     const handlePageView = (cardId : any) => {
@@ -213,7 +213,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                                 type="button"
                                 onClick={()=>{
                                     handlePageView(item.id),
-                                    // fetchGameReviews(item.name),
+                                    fetchGameReviews(item.name),
                                     setSingleCard(item);
                                 }}
                             >
@@ -240,10 +240,10 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                         <div className="m-2">Name: {singleCard.name}</div>
                         <div className="m-2">Rating: {starRating(singleCard.rating)}</div>
                         <div className="m-2">Status: {checkboxHandler(singleCard.completion_status)}</div>
-                        <div className="m-2">Review: {singleCard.review}</div>
+                        <div className="m-2 text-pretty w-3/4">Review: {singleCard.review}</div>
                     </div>
                     <div>
-                        <img className="h-60"
+                        <img className="h-60 max-w-60 mr-5"
                             src={singleCard.reference_url}
                         />
                     </div>
@@ -265,12 +265,11 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     Back
                 </button>
                 <div>
-                    <div className="text-center m-2 text-base font-bold mb-1">Reviews</div>
+                    <div className="text-center m-2 text-base font-bold mb-1 underline">Reviews</div>
                     <div>
-                        {/* TODO set conditional if no reviews return no review text */}
-                        {/* <CardReviewWidget 
+                        <CardReviewWidget 
                             recentReview={recentReview}
-                        /> */}
+                        />
                     </div>
                 </div>
             </div>
@@ -314,14 +313,14 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     </input>
                     <br/>
                     <label className="m-2">Review</label>
-                    <input
-                        className="border-2 w-11/12 m-1 h-28 text-black"
-                        type="text"
+                    <textarea
+                        // type="textarea"
+                        className="border-2 w-11/12 m-1 h-28 text-black break-all"
                         name={"review"}
                         value={editFormData.review}
                         onChange={handleInputChange}
                     >
-                    </input>
+                    </textarea>
                     <br/>
                     <label className="m-2">Cover Image Link</label>
                     <br/>
