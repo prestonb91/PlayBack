@@ -104,7 +104,6 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     "X-Rapidapi-Host": "opencritic-api.p.rapidapi.com",
                 }
             })
-            console.log(gameDataResponse.data)
             setRecentReview(gameDataResponse.data);
         } catch(err) {
             console.error("Game news error: ", err)

@@ -2,7 +2,6 @@ const authModel = require("../models/auth.model");
 const bcrypt = require("bcrypt");
 
 const getSessions = async (req, res) => {
-    console.log("backend response", req.session)
     if (req.session.user_id && req.session.username) {
         return res.json({
             user_id: req.session.user_id,
