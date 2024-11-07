@@ -47,7 +47,7 @@ const NewsTickerWidget: React.FC = () => {
 
     return (
         <>
-            <h2>Recently Released Games</h2>
+            <div className="underline font-bold">Recently Released Games</div>
             {/* {recentlyReleased.map((item : any, index : any) => {
                 return (
                 <div
@@ -70,7 +70,7 @@ const NewsTickerWidget: React.FC = () => {
                 )
             })} */}
 
-            <h2>Upcoming Games</h2>
+            <div className="underline font-bold">Upcoming Games</div>
             {/* {upcomingGames.map((item : any, index : any)=> {
                 return (
                 <div

@@ -175,37 +175,41 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
  
     return (
         <>
-            {/* TODO: include as components */}
-            <div>
+            <div className="border-2 w-1/5 absolute top-5 p-2">
+                <div className="font-bold underline">Completion Status</div>
                 <div>Total: {totalCounter}</div>
                 <div>Finished: {finishedCount}</div>
                 <div>Completion Rate: {completionRate()}%</div>
             </div>
 
-            <CreateCard
-                userId={userId}
-                cardData={cardData}
-                setCardData={setCardData}
-            />
+            <div className="border-2 p-2 absolute left-0 top-40 w-1/5 overflow-y-scroll border-dashed border-green-500">
+                <CreateCard
+                    userId={userId}
+                    cardData={cardData}
+                    setCardData={setCardData}
+                />
+            </div>
 
             {pageView === "homepage" ? (
-            <div className="border-2 w-3/5 h-max-screen overflow-y-scroll grid grid-cols-3 gap-3 absolute top-36 left-72">
+            <div className="w-7/12 h-max-screen overflow-y-scroll grid grid-cols-3 gap-2 absolute top-96 left-1/2 transform -translate-x-1/2 -translate-y-60">
                 {cardData.map((item : any, index : any) => {
 
                     return (
                         <div
-                            className="border-2 p-2 m-1"
+                            className="border-2 border-double border-green-500 p-2 m-1 relative h-96 bg-zinc-800"
                             key={index}
                         >
-                            <div>Name: {item.name}</div>
-                            <div>Rating: {starRating(item.rating)}</div>
-                            <div>Status: {checkboxHandler(item.completion_status)}</div>
-                            <div>Review: {item.review}</div>
-                            <img
-                                src={item.reference_url}
-                            />
+                            <div className="absolute top-0 left-0 truncate text-base font-bold mb-1 text-center border-2 border-double border-green-500 w-11/12">{item.name}</div>
+                                <div className="mt-7">Rating: {starRating(item.rating)}</div>
+                                <div>Status: {checkboxHandler(item.completion_status)}</div>
+                                <div className="truncate mb-1">Review: {item.review}</div>
+                                <div className="flex justify-center">
+                                    <img className="h-60"
+                                        src={item.reference_url}
+                                    />
+                                </div>
                             <button
-                                className="border-2"
+                                className="border-4 w-full absolute bottom-0 left-0 mt-2 bg-gray-300 text-gray-800 border-gray-600"
                                 type="button"
                                 onClick={()=>{
                                     handlePageView(item.id),
@@ -216,26 +220,36 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                                 View
                             </button>
                             <button
-                                className="border-2"
+                                className="border-2 w-1/12 h-7 absolute top-0 right-0 bg-gray-300 text-gray-800 border-gray-600"
                                 type="button"
                                 onClick={()=>handleDeleteCard(item.id, index)}
-                            >
-                                Delete
+                                >
+                                X
                             </button>
                         </div>
                     ) 
                 })}
             </div>
             ) : pageView === "viewCard" ? (
-                <>
-                <div>Name: {singleCard.name}</div>
-                <div>Rating: {starRating(singleCard.rating)}</div>
-                <div>Status: {checkboxHandler(singleCard.completion_status)}</div>
-                <div>Review: {singleCard.review}</div>
-                <img
-                    src={singleCard.reference_url}
-                />
+            <div className="border-8 border-green-500 border-double w-5/12 h-max-screen absolute top-96 left-1/2 transform -translate-x-1/2 -translate-y-60 bg-zinc-800">
+                <div
+                    className="text-center font-bold text-base mt-2 underline"
+                >Card Info</div>
+                <div className="flex justify-evenly pt-14 pb-5">
+                    <div>
+                        <div className="m-2">Name: {singleCard.name}</div>
+                        <div className="m-2">Rating: {starRating(singleCard.rating)}</div>
+                        <div className="m-2">Status: {checkboxHandler(singleCard.completion_status)}</div>
+                        <div className="m-2">Review: {singleCard.review}</div>
+                    </div>
+                    <div>
+                        <img className="h-60"
+                            src={singleCard.reference_url}
+                        />
+                    </div>
+                </div>
                 <button
+                    className="border-2 p-1 absolute top-0 right-11 bg-gray-300 text-gray-800 border-gray-600"
                     type="button"
                     onClick={()=>{
                         handleEditView(singleCard.id)
@@ -244,26 +258,31 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     Edit
                 </button>
                 <button
+                    className="border-2 p-1 absolute top-0 right-0 bg-gray-300 text-gray-800 border-gray-600"
                     type="button"
                     onClick={()=>setPageView("homepage")}
                 >
-                    Exit
+                    Back
                 </button>
-
                 <div>
-                    <h1>Reviews</h1>
+                    <div className="text-center m-2 text-base font-bold mb-1">Reviews</div>
                     <div>
+                        {/* TODO set conditional if no reviews return no review text */}
                         {/* <CardReviewWidget 
                             recentReview={recentReview}
                         /> */}
                     </div>
                 </div>
-            </>
+            </div>
             ) : pageView === "editCard" ? (
-            <>
-                <form>
-                    <label>Name</label>
+            <div className="border-8 border-double border-green-500 w-5/12 h-1/2 absolute top-96 left-1/2 transform -translate-x-1/2 -translate-y-60 bg-zinc-800">
+                <form className="p-2">
+                <div
+                    className="text-center font-bold text-base mb-5 underline"
+                >Edit Your Card</div>
+                    <label className="m-2">Name</label>
                     <input
+                        className="border-2 m-1 w-10/12 text-black"
                         type="text"
                         name={"name"}
                         value={editFormData.name}
@@ -271,8 +290,9 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     >
                     </input>
                     <br/>
-                    <label>Rating</label>
+                    <label className="m-2">Rating</label>
                     <input
+                        className="border-2 m-1 text-black"
                         type="number"
                         name={"rating"}
                         min="1"
@@ -282,8 +302,9 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     >
                     </input>
                     <br/>
-                    <label>Status</label>
+                    <label className="m-2">Status</label>
                     <input
+                        className="border-2 m-1"
                         type="checkbox"
                         name={"completion_status"}
                         defaultChecked={editFormData.completion_status}
@@ -292,8 +313,9 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     >
                     </input>
                     <br/>
-                    <label>Review</label>
+                    <label className="m-2">Review</label>
                     <input
+                        className="border-2 w-11/12 m-1 h-28 text-black"
                         type="text"
                         name={"review"}
                         value={editFormData.review}
@@ -301,8 +323,10 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     >
                     </input>
                     <br/>
-                    <label>Link</label>
+                    <label className="m-2">Cover Image Link</label>
+                    <br/>
                     <input
+                        className="border-2 w-11/12 m-1 text-black"
                         type="text"
                         name={"reference_url"}
                         value={editFormData.reference_url}
@@ -311,6 +335,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     </input>
                     <br/>
                 <button
+                    className="border-2 p-1 absolute top-0 right-11 bg-gray-300 text-gray-800 border-gray-600"
                     type="button"
                     onClick={()=>{
                         editCard(cardId),
@@ -320,22 +345,14 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                     Save
                 </button>
                 <button
+                    className="border-2 p-1 absolute top-0 right-0 bg-gray-300 text-gray-800 border-gray-600"
                     type="button"
                     onClick={()=>{setPageView("viewCard")}}
                 >
-                    Exit
+                    Back
                 </button>
                 </form>
-
-                <div>
-                    <h1>Reviews</h1>
-                    <div>
-                        {/* <CardReviewWidget 
-                            recentReview={recentReview}
-                        /> */}
-                    </div>
-                </div>
-            </>
+            </div>
             ) : (
                 null
             )}

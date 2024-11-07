@@ -34,15 +34,16 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
         e.preventDefault(); 
         //send form data to server
         try {
-            
             const temp = [...cardData]
             temp.push(formData)
             setCardData(temp)
+            setFormData(initialValues)
 
             await axios.post(`${apiUrl}/users/${userId}`, {
                 formData
             }, 
             { withCredentials: true});
+
 
         } catch (err) {
               console.error("Create module error ", err)
@@ -51,10 +52,13 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
 
     return (
         <>
-            <form className="border-2 w-1/5 h-lvh overflow-y-scroll p-2">
+            <form>
+                <div
+                    className="text-center font-bold text-base underline"
+                >{"Create Your Card"}</div>
                 <label className="p-1">Name</label>
                     <input
-                        className="border-2 m-1"
+                        className="border-2 m-1 w-9/12 text-black"
                         type="text"
                         name={"name"}
                         value={formData.name}
@@ -62,9 +66,9 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     >
                     </input>
                     <br/>
-                <label className="p-1">Star Rating</label>
+                <label className="p-1">Rating</label>
                     <input           
-                        className="border-2 m-1"           
+                        className="border-2 m-1 text-black"           
                         type="number"
                         name={"rating"}
                         min="0"
@@ -76,7 +80,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     <br/>
                 <label className="p-1">Status</label>
                     <input
-                        className="border-2 m-1"                    
+                        className="border-2 m-1 text-black"                    
                         type="checkbox"
                         name={"completion_status"}
                         value={formData.completion_status}
@@ -85,8 +89,9 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     </input>
                     <br/>
                 <label className="p-1">Review</label>
+                <br/>
                     <input
-                        className="border-2 h-1/5 m-1"                    
+                        className="border-2 h-28 m-1 w-11/12 text-black"                    
                         type="text"
                         name={"review"}
                         value={formData.review}
@@ -96,7 +101,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     <br/>
                 <label className="p-1">Cover Image Link</label>
                     <input
-                        className="border-2 m-1"                    
+                        className="border-2 m-1  w-11/12"                    
                         type="text"
                         name={"reference_url"}
                         value={formData.reference_url}
@@ -105,7 +110,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                     </input>
                     <br/>
                 <button
-                    className="border-2 m-1"
+                    className="border-2 m-1 w-11/12 bg-gray-300 text-gray-800 border-gray-600"
                     type="submit"
                     onClick={handleSubmit}
                 >Add Game
