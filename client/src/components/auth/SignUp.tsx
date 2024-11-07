@@ -32,12 +32,13 @@ const SignUp: React.FC<Props> = ( { setPageView }) => {
 
     return (
         <>
-            <form className="flex justify-center m-5">
+            <form className="text-white border-2 border-green-500 w-1/5 h-80 p-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-60">
+                <div className="text-center mb-5">SignUp Page</div>
                 <label
                     className="text-white"
                 >Username: </label>
                     <input  
-                        className="text-black"
+                        className="text-black w-full mb-2"
                         type="text"
                         name="username"
                         value={newUser}
@@ -48,6 +49,7 @@ const SignUp: React.FC<Props> = ( { setPageView }) => {
                     className="text-white"
                 >Password: </label>
                 <input
+                    className="text-black mb-5 w-full"
                     type="password"
                     name="password"
                     value={newPassword}
@@ -55,11 +57,18 @@ const SignUp: React.FC<Props> = ( { setPageView }) => {
                 >
                 </input>
                 <button
-                    className="text-white border ml-5"
+                    className="text-green-500 border w-full p-2 mb-2"
                     type="button"
                     onClick={handleSignUp}
                 >
                     SignUp
+                </button>
+                <button
+                    className="text-white border w-full p-2"
+                    type="button"
+                    onClick={()=>setPageView("login")}
+                >
+                    Return
                 </button>
             </form>
         </>

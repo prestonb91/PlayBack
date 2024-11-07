@@ -43,23 +43,19 @@ function App() {
   return (
     <>
       {pageView === "login" ? (
-        <div>
-          <div
-            className="font-bold text-white"
-          >
+        <div className="text-white border-2 border-green-500 w-1/5 h-80 p-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-60">
+          
             <Login 
               setUsername={setUsername}
               setUserId={setUserId}
               setPageView={setPageView}
             />
-          </div>
-          <div className="absolute top-36 left-7">
+            
               <button
-              className="text-white border"
+              className="border p-2 w-full"
               onClick={()=>setPageView("signup")}
-            >            SignUp
+            >            SignUp Page
             </button>
-          </div>
         </div>
       ) : pageView === "signup" ? (
         <>
