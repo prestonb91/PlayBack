@@ -10,9 +10,9 @@ import "./App.css"
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function App() {
-  const [pageView, setPageView] = useState<any>("login");
-  const [userId, setUserId] = useState<any>(null);
-  const [username, setUsername] = useState<any>("");
+  const [pageView, setPageView] = useState<string>("login");
+  const [userId, setUserId] = useState<number | null>(null);
+  const [username, setUsername] = useState<string>("");
 
   const handleLogout = async () => {
     try {

@@ -32,7 +32,6 @@ const loginHandler = async (req, res) => {
 
         // Set session as userinfo
         const { id: id, username: sessionUser } = userInfo;
-        // console.log(id, sessionUser)
 
         req.session.user_id = id;
         req.session.username = sessionUser;
@@ -64,11 +63,6 @@ const signUpHandler = async (req, res) => {
         res.status(500).send({ 
             message: "Internal error registering new user"
         });
-
-        // TODO: Set error handling for username already taken
-        // if (err.code == "23505") {
-        //     return res.status(400).json({ message: "Username is already taken" });
-        // }
     };
 }
 

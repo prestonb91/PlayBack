@@ -4,8 +4,8 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 interface Props {
-    userId: any;
-    cardData: any;
+    userId: number | null;
+    cardData: {}[];
     setCardData: any;
 }
 
@@ -30,7 +30,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
 
     }
 
-    const handleSubmit = async (e : any) => {
+    const handleSubmit = async (e : React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault(); 
         //send form data to server
         try {
@@ -83,7 +83,7 @@ const CreateCard: React.FC<Props> = ( { userId, cardData, setCardData }) => {
                         className="border-2 m-1 text-black"                    
                         type="checkbox"
                         name={"completion_status"}
-                        value={formData.completion_status}
+                        
                         onChange={handleInputChange}
                     >
                     </input>

@@ -20,13 +20,13 @@ const initialValues = {
 const CardGrid: React.FC<Props> = ({ userId }) => {
     const [cardData, setCardData] = useState<any>([]);
     const [cardId, setCardId] = useState<any>();
-    const [singleCard, setSingleCard] = useState<any>();
-    const [recentReview, setRecentReview] = useState<any>([]);
-    const [pageView, setPageView] = useState<any>("homepage");
+    const [singleCard, setSingleCard] = useState<any>({});
+    const [recentReview, setRecentReview] = useState<[]>([]);
+    const [pageView, setPageView] = useState<string>("homepage");
     const [editFormData, setEditFormData] = useState<any>(initialValues);
 
     // Fetch all cards based on userId
-    const fetchCards = async (userId : any) => {
+    const fetchCards = async (userId : number) => {
         try {
             const response = await axios.get(`${apiUrl}/users/${userId}`, 
             { withCredentials: true});
@@ -49,7 +49,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         })
     }
 
-    const editCard = async (cardId : any) => {
+    const editCard = async (cardId : number) => {
         try {
             const temp = [...cardData]
             const index = temp.indexOf(singleCard)
@@ -69,7 +69,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     }
 
     // Handler function to delete card
-    const handleDeleteCard = async (cardId : any, index: number) => {
+    const handleDeleteCard = async (cardId : number, index: number) => {
         const temp = [...cardData]
         temp.splice(index, 1);
         setCardData(temp)
@@ -82,7 +82,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
         }
     }
     
-    const fetchGameReviews = async(gameName : any) => {
+    const fetchGameReviews = async(gameName : string) => {
         let gameId;
         try {
             const gameIdResponse = await axios.get(`https://opencritic-api.p.rapidapi.com/game/search?criteria=${gameName}`, {
@@ -112,23 +112,23 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     } 
 
     // Helper functions to handle page view switches
-    const handlePageView = (cardId : any) => {
+    const handlePageView = (cardId : number) => {
         setPageView("viewCard");
         setCardId(cardId);
     }
 
-    const handleEditView = (cardId : any) => {
+    const handleEditView = (cardId : number) => {
         setPageView("editCard");
         setCardId(cardId);
         setEditFormData(singleCard);
     }
 
     // Function to handle star rating
-    const starRating = (stars : any) => {
+    const starRating = (stars : number) => {
         
         let starRating = "☆☆☆☆☆";
 
-        function replaceChar(str: any, index: any, char: any) {
+        function replaceChar(str: string, index: number, char: string) {
             const array = str.split(``)
             array[index] = char;
             return array.join(``)
@@ -144,7 +144,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
     }
 
     // Handler to return value based on completion status
-    const checkboxHandler = (status : any) => {
+    const checkboxHandler = (status : boolean) => {
         if (status) {
             return "Finished!"   
         } else {
@@ -192,7 +192,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
 
             {pageView === "homepage" ? (
             <div className="w-7/12 h-max-screen overflow-y-scroll grid grid-cols-3 gap-2 absolute top-96 left-1/2 transform -translate-x-1/2 -translate-y-60">
-                {cardData.map((item : any, index : any) => {
+                {cardData.map((item : { id: number, name: string, rating: string, completion_status: boolean, review: string, reference_url: string}, index : number) => {
 
                     return (
                         <div
@@ -200,7 +200,7 @@ const CardGrid: React.FC<Props> = ({ userId }) => {
                             key={index}
                         >
                             <div className="absolute top-0 left-0 truncate text-base font-bold mb-1 text-center border-2 border-double border-green-500 w-11/12">{item.name}</div>
-                                <div className="mt-7">Rating: {starRating(item.rating)}</div>
+                                <div className="mt-7">Rating: {starRating(parseInt(item.rating))}</div>
                                 <div>Status: {checkboxHandler(item.completion_status)}</div>
                                 <div className="truncate mb-1">Review: {item.review}</div>
                                 <div className="flex justify-center">

@@ -1,7 +1,5 @@
 const cardModel = require ("../models/card.model")
 
-//TODO: Add error handling
-
 const getUserData = async (req, res) => {
     try {
         const userId = parseInt(req.params.userId);

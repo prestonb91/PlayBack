@@ -1,12 +1,12 @@
 interface Props {
-    recentReview : any
+    recentReview : []
 }
 
 const CardReviewWidget: React.FC<Props> = ({ recentReview }) => {
 
     return (
         <>
-            {recentReview.map((item : any, index : any) => {
+            {recentReview.map((item : { title: string, snippet: string, externalUrl: string}, index : number) => {
                     return (
                         <div
                             className="border border-green-500 m-2 p-2"

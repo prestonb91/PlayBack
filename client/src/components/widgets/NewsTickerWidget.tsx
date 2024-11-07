@@ -2,8 +2,8 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 
 const NewsTickerWidget: React.FC = () => {
-    const [recentlyReleased, setRecentlyReleased] = useState<any>([]);
-    const [upcomingGames, setUpcomingGames] = useState<any>([]);
+    const [recentlyReleased, setRecentlyReleased] = useState<[]>([]);
+    const [upcomingGames, setUpcomingGames] = useState<[]>([]);
 
     const fetchRecentlyReleased = async() => {
 
@@ -44,7 +44,7 @@ const NewsTickerWidget: React.FC = () => {
     return (
         <>
             <div className="underline font-bold text-center text-base">Recently Released Games</div>
-            {recentlyReleased.map((item : any, index : any) => {
+            {recentlyReleased.map((item : { name: string, topCriticScore: number, firstReleaseDate: string, Platforms: []}, index : number) => {
                 return (
                 <div
                     className="border border-green-500 my-2 p-2"
@@ -55,7 +55,7 @@ const NewsTickerWidget: React.FC = () => {
                     <div>Release Date: {item.firstReleaseDate.slice(0,10)}</div>
                     <div>
                         Platforms:
-                    {item.Platforms.map((item : any, index : any) => {
+                    {item.Platforms.map((item : { name: string }, index : number) => {
                         return (
                             <div
                                 key={index}
@@ -70,7 +70,7 @@ const NewsTickerWidget: React.FC = () => {
             })}
 
             <div className="underline font-bold text-center text-base">Upcoming Games</div>
-            {upcomingGames.map((item : any, index : any)=> {
+            {upcomingGames.map((item : { name: string, firstReleaseDate: string, Platforms: []}, index : number)=> {
                 return (
                 <div
                     className="border border-green-500 my-2 p-2"
@@ -80,7 +80,7 @@ const NewsTickerWidget: React.FC = () => {
                     <p>Release Date: {item.firstReleaseDate.slice(0,10)}</p>
                     <p>
                         Platforms:
-                    {item.Platforms.map((item : any, index: any) => {
+                    {item.Platforms.map((item : { name: string }, index: number) => {
                         return (
                             <li    
                                 key={index}

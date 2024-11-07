@@ -7,14 +7,14 @@ const apiUrl = import.meta.env.VITE_API_URL;
 // TODO: Add sign up error handling
 
 interface Props {
-    setPageView: any;
+    setPageView: (value: string) => void;
 }
 
 const SignUp: React.FC<Props> = ( { setPageView }) => {
     const [newUser, setNewUser] = useState("");
     const [newPassword, setNewPassword] = useState("");
 
-    const handleSignUp = async (e : any) => {
+    const handleSignUp = async (e : React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
             await axios.post(`${apiUrl}/signup`, {
@@ -41,7 +41,7 @@ const SignUp: React.FC<Props> = ( { setPageView }) => {
                         type="text"
                         name="username"
                         value={newUser}
-                        onChange={(e : any) => setNewUser(e.target.value)}
+                        onChange={(e : React.ChangeEvent<HTMLInputElement>) => setNewUser(e.target.value)}
                         >
                 </input>
                 <label
@@ -51,7 +51,7 @@ const SignUp: React.FC<Props> = ( { setPageView }) => {
                     type="password"
                     name="password"
                     value={newPassword}
-                    onChange={(e : any) => setNewPassword(e.target.value)}
+                    onChange={(e : React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)}
                 >
                 </input>
                 <button

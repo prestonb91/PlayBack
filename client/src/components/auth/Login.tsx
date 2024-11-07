@@ -5,14 +5,14 @@ import { useState, useRef, useEffect } from "react";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 interface Props {
-    setUsername: any, 
-    setPageView: any,
-    setUserId: any,
+    setUsername: (value: string) => void, 
+    setPageView: (value: string) => void,
+    setUserId: (value: number) => void,
 }
 
 const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
-    const inputUsername : any = useRef();
-    const inputPassword : any = useRef();
+    const inputUsername = useRef<any>("");
+    const inputPassword = useRef<any>("");
 
     const [loginUser, setLoginUser] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
@@ -29,7 +29,7 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
     }, [loginUser, loginPassword]);
 
     // calls handleSubmit on function of login form
-    const handleLoginClick = async (e : any) => {
+    const handleLoginClick = async (e : React.MouseEvent<HTMLButtonElement>) => {
         // Prevents default behavior form which is reload page
         e.preventDefault();
         // Post request to submit login information
@@ -63,7 +63,7 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
                             id="username"
                             ref={inputUsername}
                             value={loginUser}
-                            onChange={(e : any) => setLoginUser(e.target.value)}
+                            onChange={(e : React.ChangeEvent<HTMLInputElement>) => setLoginUser(e.target.value)}
                         >
                         </input>
                     <label className="text-white">Password:</label>
@@ -73,7 +73,7 @@ const Login: React.FC<Props> = ( {setUsername, setUserId, setPageView }) => {
                             id="password"
                             ref={inputPassword}
                             value={loginPassword}
-                            onChange={(e : any) => setLoginPassword(e.target.value)}
+                            onChange={(e : React.ChangeEvent<HTMLInputElement>) => setLoginPassword(e.target.value)}
                             >
                         </input>
                     <button
